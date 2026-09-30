@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KlinisAI – AI Agent Farmasi Klinis</title>
+<style>
+body{font-family:Arial,sans-serif;background:#f4f7fb;margin:0;color:#1f2937}
+header{background:#163a5f;color:white;padding:28px 7%}
+header h1{margin:0 0 8px;font-size:30px} header p{margin:0;opacity:.9}
+main{max-width:1050px;margin:28px auto;padding:0 20px}
+.card{background:white;border-radius:14px;padding:22px;margin-bottom:20px;box-shadow:0 3px 12px #00000012}
+h2{font-size:20px;margin-top:0;color:#163a5f}
+textarea{width:100%;min-height:180px;border:1px solid #cbd5e1;border-radius:10px;padding:12px;box-sizing:border-box;font-size:14px;line-height:1.5}
+button{background:#163a5f;color:white;border:0;border-radius:9px;padding:12px 18px;font-weight:bold;cursor:pointer;margin-top:12px}
+button:hover{opacity:.9}
+.agent{border-left:5px solid #163a5f;background:#f8fafc;padding:14px;margin:10px 0;border-radius:8px}
+.agent b{display:block;margin-bottom:6px}
+.result{background:#eef6ff;padding:16px;border-radius:10px;margin-top:12px}
+table{width:100%;border-collapse:collapse;margin-top:10px}th,td{border:1px solid #dbe3ec;padding:9px;text-align:left;vertical-align:top}th{background:#edf2f7}
+.small{font-size:12px;color:#64748b}
+.warn{background:#fff7ed;border-left:4px solid #f59e0b;padding:12px;margin-top:15px}
+.footer{font-size:12px;color:#64748b;text-align:center;padding:20px}
+</style>
+</head>
+<body>
+<header>
+<h1>KlinisAI</h1>
+<p>Demonstrasi AI Agent untuk identifikasi Drug Related Problems (DRPs) dan evaluasi terapi obat</p>
+</header>
+<main>
+<div class="card">
+<h2>1. Masukkan kasus pasien</h2>
+<textarea id="caseText">Laki-laki 49 tahun, hipertensi, CKD stadium 3a (eGFR 51,6 mL/min/1,73 m²) datang dengan keluhan bengkak pada tubuh. Pasien mendapat torsemide, cilnidipine, calcium acetate, ferrous ascorbate dan paricalcitol. Tiga minggu kemudian muncul lesi kemerahan berbentuk vesikel yang sedikit gatal pada lengan bawah dan pergelangan tangan, terdistribusi simetris pada area yang terpapar matahari. Pemeriksaan menunjukkan diagnosis pseudoporfiria. Kadar porfirin normal.</textarea>
+<button onclick="runAgents()">Jalankan AI Agent</button>
+</div>
+
+<div class="card">
+<h2>2. Proses multi-agent</h2>
+<div id="agents">
+<div class="agent"><b>Agent 1 – Case Extraction</b>Menunggu input kasus...</div>
+<div class="agent"><b>Agent 2 – DRP Identification</b>Menunggu Agent 1...</div>
+<div class="agent"><b>Agent 3 – Therapy Evaluation</b>Menunggu Agent 2...</div>
+<div class="agent"><b>Agent 4 – Recommendation</b>Menunggu Agent 3...</div>
+</div>
+</div>
+
+<div class="card">
+<h2>3. Hasil evaluasi</h2>
+<div id="output" class="result">Hasil akan muncul setelah AI Agent dijalankan.</div>
+</div>
+
+<div class="card">
+<h2>4. Referensi kasus</h2>
+<p>Kasus demo diadaptasi dari Quaiser S, Khan R, Khan AS. <i>Drug induced pseudoporphyria in CKD: A case report.</i> Indian Journal of Nephrology. 2015;25(5):307–309. DOI: 10.4103/0971-4065.160335.</p>
+<p class="small">Aplikasi ini dibuat untuk demonstrasi akademik pemanfaatan AI Agent dalam farmasi klinis. Hasil bukan pengganti keputusan dokter/apoteker dan harus diverifikasi dengan sumber klinis yang sesuai.</p>
+</div>
+</main>
+<div class="footer">KlinisAI – Proyek tugas AI Farmasi Klinis</div>
+
+<script>
+function setAgent(n, title, text){
+  document.getElementById('agents').children[n].innerHTML="<b>"+title+"</b>"+text;
+}
+
+function runAgents(){
+  const c=document.getElementById('caseText').value.toLowerCase();
+
+  setAgent(0,"Agent 1 – Case Extraction",
+    "Mengekstraksi pasien, diagnosis, obat, gejala, pemeriksaan dan hubungan waktu antara obat dengan keluhan.");
+  setTimeout(()=>{
+    setAgent(1,"Agent 2 – DRP Identification",
+      "Mendeteksi dugaan masalah terkait obat: <b>torsemide diduga berhubungan dengan pseudoporfiria</b> berdasarkan hubungan temporal dan laporan kasus.");
+  },350);
+  setTimeout(()=>{
+    setAgent(2,"Agent 3 – Therapy Evaluation",
+      "Menilai indikasi dan keamanan terapi. Fokus utama: obat tersangka, kondisi CKD, gejala kulit, dan kebutuhan pemantauan. Terapi lain tidak dinyatakan bermasalah bila tidak ada bukti dari kasus.");
+  },700);
+  setTimeout(()=>{
+    setAgent(3,"Agent 4 – Recommendation",
+      "Menyusun rekomendasi berbasis kasus: pertimbangkan penghentian/penggantian obat tersangka setelah evaluasi klinis, lakukan fotoproteksi, dan monitor perbaikan lesi. Keputusan terapi tetap memerlukan verifikasi tenaga kesehatan.");
+  },1050);
+  setTimeout(()=>{
+    document.getElementById('output').innerHTML=`
+    <table>
+      <tr><th>Komponen</th><th>Hasil</th></tr>
+      <tr><td>Diagnosis utama</td><td>Pseudoporfiria pada pasien CKD stadium 3a.</td></tr>
+      <tr><td>DRP utama</td><td>Reaksi/efek obat yang dicurigai terkait penggunaan torsemide.</td></tr>
+      <tr><td>Obat tersangka</td><td>Torsemide.</td></tr>
+      <tr><td>Parameter efektivitas</td><td>Perbaikan lesi kulit, berkurangnya pruritus, dan resolusi lesi pada follow-up.</td></tr>
+      <tr><td>Parameter keamanan</td><td>Perubahan lesi kulit, reaksi fotosensitivitas, kondisi ginjal dan elektrolit sesuai kebutuhan klinis.</td></tr>
+      <tr><td>Rekomendasi</td><td>Evaluasi penghentian/penggantian torsemide oleh tenaga kesehatan; lakukan fotoproteksi dan tindak lanjut kondisi kulit serta kebutuhan diuretik.</td></tr>
+    </table>
+    <div class="warn"><b>Catatan:</b> Sistem ini adalah prototipe edukasi. AI tidak boleh menjadi satu-satunya dasar keputusan terapi pasien.</div>`;
+  },1400);
+}
+</script>
+</body>
+</html>
